@@ -1,5 +1,7 @@
 import * as THREE from "https://unpkg.com/three@latest/build/three.module.js";
 import { Pane } from "https://cdn.jsdelivr.net/npm/tweakpane@4.0.5/dist/tweakpane.min.js";
+import { GLTFLoader } from "https://unpkg.com/three@latest/examples/jsm/loaders/GLTFLoader.js";
+import gsap from "https://cdn.jsdelivr.net/npm/gsap@3.12.2/index.js";
 
 // SETTINGS
 const settings = {
@@ -34,6 +36,49 @@ class Viewer {
 
         // Demander un rendu
         this.render();
+    }
+
+    loadModel() {
+        const loader = new GLTFLoader()
+
+        loader.load( '.glb', ( gltf ) => {
+            this.gltf = gltf;
+            this.scene.add( this.gltf.scene );
+            this.steps = this.gltf.cameras.length;
+
+            for (let i = 0; i < this.steps; i++) {
+                const camera = gltf.cameras.find(x => x.name === "Camera"+i+"_Orientation");
+                const target = this.scene.getObjectByName( "target" + i );
+                this.targets.push(target);
+                this.cameras.push(camera);
+            };
+        });
+    }
+
+    updateStep() {
+        const camPos = this.cameras[this.currentStep].parent.position;
+        const target = this.targets[this.currentStep].position;
+
+        gsap.to(this.tempTarget, {
+            x: target.x,
+            y: target.y,
+            z: target.z,
+            duration: 3,
+            ease: "Power3.easeInOut",
+        });
+
+        gsap.to(this.camera.position, {
+            x: camPos.x,
+            y: camPos.y,
+            z: camPos.z,
+            duration: 3,
+            ease: "Power3.easeInOut",
+
+            onUpdate: ()=>{
+                this.camera.lookAt(this.tempTarget);
+                this.controls.target = this.tempTarget;
+            }
+        });
     }
 
     removeGizmo() {
