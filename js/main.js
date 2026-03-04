@@ -21,6 +21,11 @@ class Viewer {
     constructor(options) {
         this.canvas = options.canvas;
 
+        this.cameras = [];
+        this.targets = [];
+        this.currentStep = 0;
+        this.tempTarget = new THREE.Vector3();
+
         this.setRenderer(options);
     }
 
@@ -79,6 +84,11 @@ class Viewer {
                 this.controls.target = this.tempTarget;
             }
         });
+    }
+
+    nextStep() {
+        this.currentStep = (this.currentStep + 1) % this.steps;
+        this.updateStep();
     }
 
     removeGizmo() {
@@ -150,6 +160,7 @@ class Viewer {
 }
 
 const myViewer = new Viewer(threejsOptions);
+myViewer.loadModel();
 // myViewer.addGizmo(2);
 
 // Ajouter un event resize et appeler la fonction qui
