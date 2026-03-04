@@ -29,7 +29,7 @@ class Viewer {
         this.setRenderer(options);
     }
 
-    populate() {
+    /*populate() {
         // Tout les éléments à ajouter dans la scene
 
         const geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -41,12 +41,12 @@ class Viewer {
 
         // Demander un rendu
         this.render();
-    }
+    }*/
 
     loadModel() {
         const loader = new GLTFLoader()
 
-        loader.load( '.glb', ( gltf ) => {
+        loader.load( '../assets/2024_ford_f-150_raptor_r/scene.gltf', ( gltf ) => {
             this.gltf = gltf;
             this.scene.add( this.gltf.scene );
             this.steps = this.gltf.cameras.length;
@@ -58,6 +58,9 @@ class Viewer {
                 this.cameras.push(camera);
             };
         });
+
+        this.scene.add(this.gltf.scene);
+        this.render();
     }
 
     updateStep() {
@@ -132,7 +135,7 @@ class Viewer {
         this.resize();
 
         // Appele la fonction d'ajout d'éléments
-        this.populate();
+        //this.populate();
     }
 
     resize() {
