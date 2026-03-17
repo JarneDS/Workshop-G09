@@ -1,8 +1,10 @@
-import * as THREE from "https://unpkg.com/three@latest/build/three.module.js";
+import * as THREE from "https://esm.sh/three";
+import { GLTFLoader } from 'https://esm.sh/three/addons/loaders/GLTFLoader.js';
+import { OrbitControls } from 'https://esm.sh/three/addons/controls/OrbitControls.js';
+import gsap from "https://esm.sh/gsap";
 import { Pane } from "https://cdn.jsdelivr.net/npm/tweakpane@4.0.5/dist/tweakpane.min.js";
-import { GLTFLoader } from "https://unpkg.com/three@latest/examples/jsm/loaders/GLTFLoader.js";
-import gsap from "https://cdn.jsdelivr.net/npm/gsap@3.12.2/index.js";
 
+console.log(gsap);
 // SETTINGS
 const settings = {
     wrapper: document.querySelector(".js-canvas-wrapper"),
@@ -17,81 +19,88 @@ const threejsOptions = {
 
 //// VIEWER CLASS
 
+const loader = new GLTFLoader();
+const gltf = await loader.loadAsync( "/assets/portal.glb" );
+
+const textureLoader = new THREE.TextureLoader();
+const texture = await textureLoader.loadAsync( '/assets/baked.jpg' );
+
 class Viewer {
     constructor(options) {
         this.canvas = options.canvas;
 
-        this.cameras = [];
-        this.targets = [];
-        this.currentStep = 0;
-        this.tempTarget = new THREE.Vector3();
-
         this.setRenderer(options);
     }
 
-    /*populate() {
-        // Tout les éléments à ajouter dans la scene
+    updateCameraPosition() {
+        const newPosition = this.cameraPositions[ this.indexCamera ];
+        this.camera.position.set( newPosition.x, newPosition.y, newPosition.z );
+        this.camera.lookAt(0,0,0);
+    }
 
-        const geometry = new THREE.BoxGeometry(1, 1, 1);
+    travelling() {
+
+        this.indexCamera = 0;
+        this.cameraPositions = [];
+
+        const geometry = new THREE.BoxGeometry( .25,.25,.25);
         const material = new THREE.MeshBasicMaterial({
-            color: "slateblue",
+            color: 'crimson'
         });
-        const mesh = new THREE.Mesh(geometry, material);
-        this.scene.add(mesh);
+
+
+        const cube1 = new THREE.Mesh( geometry, material );
+        cube1.position.x = 3;
+        cube1.position.z = 4;
+        cube1.position.y = 3;
+        cube1.visible = false;
+
+        const cube2 = new THREE.Mesh( geometry, material );
+
+        cube2.position.x = -3;
+        cube2.position.z = 2;
+        cube2.position.y = 1;
+        cube2.visible = false;
+
+        const cube3 = new THREE.Mesh( geometry, material );
+
+        cube3.position.x = 3;
+        cube3.position.z = -2;
+        cube3.position.y = 2;
+        cube3.visible = false;
+
+        this.cameraPositions.push(cube1.position, cube2.position, cube3.position);
+        
+        this.scene.add( cube1, cube2, cube3 );
+        this.updateCameraPosition();
+        this.render();
+    }
+
+    populate() {        
+        this.scene.add( gltf.scene );
+
+        const baked = this.scene.getObjectByName('baked');
+        baked.material = new THREE.MeshBasicMaterial({
+            map: texture
+        });
+
+        baked.material.map.flipY = false;
+
+        // this.camera.position.set( this.cube1.position.x, this.cube1.position.y, this.cube1.position.z );
+        // this.camera.lookAt( 0,0, 0);
+
+        // this.scene.add( this.cube1, this.cube2 );
+
+        // const light = new THREE.AmbientLight({color: 'white', intensity: 1});
+        // const directionalLight = new THREE.DirectionalLight( {color: 'white', intensity: 1} );
+        // directionalLight.position.x = 2;
+        // directionalLight.position.z = 2;
+        // directionalLight.lookAt( 0,0,0);
+
+        // this.scene.add( light, directionalLight );
 
         // Demander un rendu
         this.render();
-    }*/
-
-    loadModel() {
-        const loader = new GLTFLoader()
-
-        loader.load( '../assets/2024_ford_f-150_raptor_r/scene.gltf', ( gltf ) => {
-            this.gltf = gltf;
-            this.scene.add( this.gltf.scene );
-            this.steps = this.gltf.cameras.length;
-
-            for (let i = 0; i < this.steps; i++) {
-                const camera = gltf.cameras.find(x => x.name === "Camera"+i+"_Orientation");
-                const target = this.scene.getObjectByName( "target" + i );
-                this.targets.push(target);
-                this.cameras.push(camera);
-            };
-        });
-
-        this.scene.add(this.gltf.scene);
-        this.render();
-    }
-
-    updateStep() {
-        const camPos = this.cameras[this.currentStep].parent.position;
-        const target = this.targets[this.currentStep].position;
-
-        gsap.to(this.tempTarget, {
-            x: target.x,
-            y: target.y,
-            z: target.z,
-            duration: 3,
-            ease: "Power3.easeInOut",
-        });
-
-        gsap.to(this.camera.position, {
-            x: camPos.x,
-            y: camPos.y,
-            z: camPos.z,
-            duration: 3,
-            ease: "Power3.easeInOut",
-
-            onUpdate: ()=>{
-                this.camera.lookAt(this.tempTarget);
-                this.controls.target = this.tempTarget;
-            }
-        });
-    }
-
-    nextStep() {
-        this.currentStep = (this.currentStep + 1) % this.steps;
-        this.updateStep();
     }
 
     removeGizmo() {
@@ -127,6 +136,12 @@ class Viewer {
         // Recule notre camera pour qu'on puisse voir le centre de la scene
         this.camera.position.z = 10;
 
+        // OrbitControls
+        // this.controls = new OrbitControls( this.camera, this.renderer.domElement );
+        // this.controls.addEventListener( 'change', () => {
+        //     this.render();
+        // } );
+
         // Crée notre scene et y rajoute notre camera
         this.scene = new THREE.Scene();
         this.scene.add(this.camera);
@@ -135,7 +150,8 @@ class Viewer {
         this.resize();
 
         // Appele la fonction d'ajout d'éléments
-        //this.populate();
+        this.travelling();
+        this.populate();
     }
 
     resize() {
@@ -148,7 +164,7 @@ class Viewer {
         // à plus haute densité de pixel.
         settings.sizes.dpr = Math.min(window.devicePixelRatio, 2);
 
-        settings.canvas.style.aspetRatio = `${settings.sizes.w}/${settings.sizes.h}`;
+        settings.canvas.style.aspectRatio = `${settings.sizes.w}/${settings.sizes.h}`;
 
         // Mettre à jour la camera
         this.camera.aspect = settings.sizes.w / settings.sizes.h;
@@ -163,11 +179,28 @@ class Viewer {
 }
 
 const myViewer = new Viewer(threejsOptions);
-myViewer.loadModel();
 // myViewer.addGizmo(2);
 
 // Ajouter un event resize et appeler la fonction qui
 // gère les changements de tailles
 window.addEventListener("resize", () => {
     myViewer.resize();
+});
+
+window.addEventListener("click", () => {
+    myViewer.indexCamera++;
+    const length = myViewer.cameraPositions.length;
+    gsap.to( myViewer.camera.position, {
+        duration: 1,
+        x: myViewer.cameraPositions[ myViewer.indexCamera % length ].x,
+        y: myViewer.cameraPositions[ myViewer.indexCamera % length ].y,
+        z: myViewer.cameraPositions[ myViewer.indexCamera % length ].z,
+        onUpdate: () => {
+            myViewer.camera.lookAt(0,0,0);
+            myViewer.render();
+        }
+    });
+    // myViewer.camera.position.set( myViewer.cube2.position.x, myViewer.cube2.position.y, myViewer.cube2.position.z );
+    // myViewer.camera.lookAt(0,0,0);
+    // myViewer.render();
 });
