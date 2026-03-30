@@ -247,25 +247,24 @@ btnSuiv.addEventListener('click', () => {
     moveCamera();
 });
 
-const btnPlay = document.querySelectorAll('.boutonPlay');
-const btnPause = document.querySelectorAll('.boutonPause');
-const audio = document.getElementById('player');
+document.querySelectorAll('.vinylHouseTxt').forEach(block => {
 
-btnPlay.forEach(btn => {
-    btn.addEventListener('click', () => {
+    const audio = block.querySelector('audio');
+    const playBtn = block.querySelector('.boutonPlay');
+    const pauseBtn = block.querySelector('.boutonPause');
+    const house = block.querySelector('.house');
+    const vinylWrapper = block.querySelector('.vinylHouse');
+
+    playBtn.addEventListener('click', () => {
         audio.play();
-
-        btn.classList.add('active');
-        btn.closest('.player').classList.add('is-playing');
+        house.classList.add('hidden');
+        vinylWrapper.classList.add('playing');
     });
-});
 
-btnPause.forEach(btn => {
-    btn.addEventListener('click', () => {
+    pauseBtn.addEventListener('click', () => {
         audio.pause();
-
-        document.querySelectorAll('.boutonPlay').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.player').forEach(p => p.classList.remove('is-playing'));
+        house.classList.remove('hidden');
+        vinylWrapper.classList.remove('playing');
     });
-});
 
+});

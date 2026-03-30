@@ -111,6 +111,19 @@ body, html {
     left: 50%;
     transform: translate(-20%, -50%); /* fait dépasser à droite */
     z-index: 1200;
+    transition: all .5s ease;
+}
+
+.vinylHouse.playing .house {
+    transform: translateX(40px);
+}
+
+.house.hidden {
+    opacity: 0;
+}
+
+.vinylHouse.playing .vinyl {
+    transform: translate(-38%, -50%) rotate(360deg);
 }
 
 .prenom {
