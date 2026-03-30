@@ -51,10 +51,10 @@ body, html {
 }
 
 .jukebox {
-    display: none;
+    display: block;
     position: absolute;
     inset: 20px;
-    z-index: 9999;
+    z-index: 1200;
     background-color: rgb(255, 96, 31, .74);
     border-radius: 20px;
     padding: 10px;
@@ -69,3 +69,36 @@ body, html {
     filter: drop-shadow(0 0 10px rgba(243, 219, 185, 0.5));
 }
 
+.vinyles {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.vinylHouse {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 226px;
+    gap: 20px;
+}
+
+.house {
+    width: 182px;
+    position: relative;
+    z-index: 1400;
+    right: 44px;
+    left: 0;
+}
+
+.vinyl {
+    width: 182px;
+    position: absolute;
+    z-index: 1300;
+    margin-left: 44px;
+}
+
+.prenom {
+    font-size: 20px;
+}
