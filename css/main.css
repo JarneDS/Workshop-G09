@@ -1,3 +1,17 @@
+@font-face {
+  font-family: 'Righteous';
+  src: url('../font/Righteous-Regular.eot');
+  src: url('../font/Righteous-Regular.eot?#iefix') format('embedded-opentype'),
+       url('../font/Righteous-Regular.woff2') format('woff2'),
+       url('../font/Righteous-Regular.woff') format('woff'),
+       url('../font/Righteous-Regular.ttf')  format('truetype'),
+       url('../font/Righteous-Regular.svg#FontName') format('svg');
+}
+
+body, html {
+    font-family: "Righteous";
+}
+
 .canvas__wrapper {
     display: block;
     width: 100vw;
@@ -16,3 +30,22 @@
     left: 50%;
     translate: -50% -50%;
 }
+
+.jukebox {
+    position: absolute;
+    inset: 20px;
+    z-index: 9999;
+    background-color: rgb(255, 96, 31, .74);
+    border-radius: 20px;
+    padding: 10px;
+    border: 1px solid #F1F1F1;
+}
+
+.btnRetour {
+    color: #F1F1F1;
+    background: linear-gradient(180deg, #F29B27, #DE2B2E, #D12943, #B12349, #66143C);
+    padding: 10px;
+    border-radius: 10px;
+    filter: drop-shadow(0 0 10px rgba(243, 219, 185, 0.5));
+}
+
