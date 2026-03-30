@@ -51,7 +51,7 @@ body, html {
 }
 
 .jukebox {
-    display: block;
+    display: none;
     position: absolute;
     inset: 20px;
     z-index: 1200;
@@ -74,9 +74,11 @@ body, html {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+    gap: 40px 150px;
+    margin-top: 60px;
 }
 
-.vinylHouse {
+.vinylHouseTxt {
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -84,21 +86,35 @@ body, html {
     gap: 20px;
 }
 
-.house {
-    width: 182px;
+.boutonsPlayPause {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+}
+
+.vinylHouse {
     position: relative;
-    z-index: 1400;
-    right: 44px;
-    left: 0;
+    width: 182px;
+}
+
+.house {
+    width: 100%;
+    position: relative;
+    z-index: 1300;
 }
 
 .vinyl {
-    width: 182px;
     position: absolute;
-    z-index: 1300;
-    margin-left: 44px;
+    width: 182px; /* plus grand que la pochette */
+    top: 48%;
+    left: 50%;
+    transform: translate(-20%, -50%); /* fait dépasser à droite */
+    z-index: 1200;
 }
 
 .prenom {
     font-size: 20px;
+    text-align: center;
+    color: #F1F1F1;
 }
