@@ -247,5 +247,25 @@ btnSuiv.addEventListener('click', () => {
     moveCamera();
 });
 
+const btnPlay = document.querySelectorAll('.boutonPlay');
+const btnPause = document.querySelectorAll('.boutonPause');
+const audio = document.getElementById('player');
 
+btnPlay.forEach(btn => {
+    btn.addEventListener('click', () => {
+        audio.play();
+
+        btn.classList.add('active');
+        btn.closest('.player').classList.add('is-playing');
+    });
+});
+
+btnPause.forEach(btn => {
+    btn.addEventListener('click', () => {
+        audio.pause();
+
+        document.querySelectorAll('.boutonPlay').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.player').forEach(p => p.classList.remove('is-playing'));
+    });
+});
 
