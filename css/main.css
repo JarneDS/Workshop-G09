@@ -32,6 +32,7 @@ body, html {
 }
 
 .jukebox {
+    display: none;
     position: absolute;
     inset: 20px;
     z-index: 9999;

@@ -20,11 +20,11 @@ const threejsOptions = {
 //// VIEWER CLASS
 
 const loader = new GLTFLoader();
-const gltf = await loader.loadAsync( "/assets/portal.glb" );
+const gltf = await loader.loadAsync( "/assets/blockingAssemble.glb" );
 
-const textureLoader = new THREE.TextureLoader();
+/*const textureLoader = new THREE.TextureLoader();
 const texture = await textureLoader.loadAsync( '/assets/baked.jpg' );
-
+*/
 class Viewer {
     constructor(options) {
         this.canvas = options.canvas;
@@ -33,71 +33,54 @@ class Viewer {
     }
 
     updateCameraPosition() {
-        const newPosition = this.cameraPositions[ this.indexCamera ];
-        this.camera.position.set( newPosition.x, newPosition.y, newPosition.z );
-        this.camera.lookAt(0,0,0);
+        const target = this.cameraTargets[this.indexCamera];
+
+        this.camera.position.copy(
+            target.getWorldPosition(new THREE.Vector3())
+        );
+
+        this.camera.quaternion.copy(
+            target.getWorldQuaternion(new THREE.Quaternion())
+        );
     }
+
 
     travelling() {
 
         this.indexCamera = 0;
-        this.cameraPositions = [];
 
-        const geometry = new THREE.BoxGeometry( .25,.25,.25);
-        const material = new THREE.MeshBasicMaterial({
-            color: 'crimson'
-        });
-
-
-        const cube1 = new THREE.Mesh( geometry, material );
-        cube1.position.x = 3;
-        cube1.position.z = 4;
-        cube1.position.y = 3;
-        cube1.visible = false;
-
-        const cube2 = new THREE.Mesh( geometry, material );
-
-        cube2.position.x = -3;
-        cube2.position.z = 2;
-        cube2.position.y = 1;
-        cube2.visible = false;
-
-        const cube3 = new THREE.Mesh( geometry, material );
-
-        cube3.position.x = 3;
-        cube3.position.z = -2;
-        cube3.position.y = 2;
-        cube3.visible = false;
-
-        this.cameraPositions.push(cube1.position, cube2.position, cube3.position);
+        const cam1 = gltf.scene.getObjectByName("camera1");
+        const cam2 = gltf.scene.getObjectByName("camera2");
         
-        this.scene.add( cube1, cube2, cube3 );
+        this.cameraTargets = [cam1, cam2];
+        console.log(cam1, cam2);
         this.updateCameraPosition();
         this.render();
     }
 
     populate() {        
-        this.scene.add( gltf.scene );
+        this.scene.add(gltf.scene);
+        gltf.scene.updateMatrixWorld(true);
 
-        const baked = this.scene.getObjectByName('baked');
+        /*const baked = this.scene.getObjectByName('baked');
         baked.material = new THREE.MeshBasicMaterial({
             map: texture
-        });
+        });*/
 
-        baked.material.map.flipY = false;
+        //baked.material.map.flipY = false;
 
         // this.camera.position.set( this.cube1.position.x, this.cube1.position.y, this.cube1.position.z );
         // this.camera.lookAt( 0,0, 0);
 
         // this.scene.add( this.cube1, this.cube2 );
 
-        // const light = new THREE.AmbientLight({color: 'white', intensity: 1});
-        // const directionalLight = new THREE.DirectionalLight( {color: 'white', intensity: 1} );
-        // directionalLight.position.x = 2;
-        // directionalLight.position.z = 2;
-        // directionalLight.lookAt( 0,0,0);
+        const light = new THREE.AmbientLight({color: 'white', intensity: 1});
+        const directionalLight = new THREE.DirectionalLight( {color: 'white', intensity: 1} );
+        directionalLight.position.x = 2;
+        directionalLight.position.z = 2;
+        directionalLight.lookAt( 0,0,0);
 
-        // this.scene.add( light, directionalLight );
+        this.scene.add( light, directionalLight );
 
         // Demander un rendu
         this.render();
@@ -149,9 +132,9 @@ class Viewer {
         // Change une première fois la taille de notre canvas
         this.resize();
 
+        this.populate();
         // Appele la fonction d'ajout d'éléments
         this.travelling();
-        this.populate();
     }
 
     resize() {
@@ -189,18 +172,26 @@ window.addEventListener("resize", () => {
 
 window.addEventListener("click", () => {
     myViewer.indexCamera++;
-    const length = myViewer.cameraPositions.length;
-    gsap.to( myViewer.camera.position, {
+    const target = myViewer.cameraTargets[myViewer.indexCamera % myViewer.cameraTargets.length];
+
+    gsap.to(myViewer.camera.position, {
         duration: 1,
-        x: myViewer.cameraPositions[ myViewer.indexCamera % length ].x,
-        y: myViewer.cameraPositions[ myViewer.indexCamera % length ].y,
-        z: myViewer.cameraPositions[ myViewer.indexCamera % length ].z,
+        x: target.getWorldPosition(new THREE.Vector3()).x,
+        y: target.getWorldPosition(new THREE.Vector3()).y,
+        z: target.getWorldPosition(new THREE.Vector3()).z,
         onUpdate: () => {
-            myViewer.camera.lookAt(0,0,0);
+            myViewer.camera.quaternion.copy(
+                target.getWorldQuaternion(new THREE.Quaternion())
+            );
             myViewer.render();
         }
     });
-    // myViewer.camera.position.set( myViewer.cube2.position.x, myViewer.cube2.position.y, myViewer.cube2.position.z );
-    // myViewer.camera.lookAt(0,0,0);
-    // myViewer.render();
 });
+
+
+const jukebox = document.querySelector('.btnRetour');
+const jukeboxInterface = document.querySelector('.jukebox');
+
+jukebox.addEventListener('click', () => {
+    jukeboxInterface.style.display = 'block';
+})
