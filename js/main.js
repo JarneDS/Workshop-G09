@@ -188,12 +188,46 @@ function moveCamera() {
     });
 }
 
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+settings.canvas.addEventListener("click", onClick3D);
+
+/* https://threejs.org/docs/#Raycaster */
+function onClick3D(event) {
+    const rect = settings.canvas.getBoundingClientRect();
+    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, myViewer.camera);
+
+    const intersects = raycaster.intersectObjects(gltf.scene.children, true);
+
+    if (intersects.length > 0) {
+        const obj = intersects[0].object;
+
+        if (obj.name === "Jukebox") {
+            ouvrirJukebox();
+        }
+    }
+}
+
+function ouvrirJukebox() {
+    const jukeboxInterface = document.querySelector('.jukebox');
+    jukeboxInterface.style.display = 'block';
+}
+
 const jukebox = document.querySelector('.btnRetour');
 const jukeboxInterface = document.querySelector('.jukebox');
 
 jukebox.addEventListener('click', () => {
     jukeboxInterface.style.display = 'block';
 })
+
+const btnRetour = document.querySelector('.btnRetour');
+btnRetour.addEventListener('click', () => {
+    jukeboxInterface.style.display = 'none';
+});
 
 const btnPrec = document.querySelector('.camera-precedent');
 const btnSuiv = document.querySelector('.camera-suivant');
