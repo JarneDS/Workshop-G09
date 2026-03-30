@@ -4,7 +4,6 @@ import { OrbitControls } from 'https://esm.sh/three/addons/controls/OrbitControl
 import gsap from "https://esm.sh/gsap";
 import { Pane } from "https://cdn.jsdelivr.net/npm/tweakpane@4.0.5/dist/tweakpane.min.js";
 
-console.log(gsap);
 // SETTINGS
 const settings = {
     wrapper: document.querySelector(".js-canvas-wrapper"),
@@ -53,7 +52,6 @@ class Viewer {
         const cam2 = gltf.scene.getObjectByName("camera2");
         
         this.cameraTargets = [cam1, cam2];
-        console.log(cam1, cam2);
         this.updateCameraPosition();
         this.render();
     }
