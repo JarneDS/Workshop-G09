@@ -60,7 +60,6 @@ class Viewer {
 
     populate() {        
         this.scene.add(gltf.scene);
-        gltf.scene.updateMatrixWorld(true);
 
         /*const baked = this.scene.getObjectByName('baked');
         baked.material = new THREE.MeshBasicMaterial({
@@ -170,9 +169,10 @@ window.addEventListener("resize", () => {
     myViewer.resize();
 });
 
-window.addEventListener("click", () => {
-    myViewer.indexCamera++;
-    const target = myViewer.cameraTargets[myViewer.indexCamera % myViewer.cameraTargets.length];
+function moveCamera() {
+    const target = myViewer.cameraTargets[
+        myViewer.indexCamera % myViewer.cameraTargets.length
+    ];
 
     gsap.to(myViewer.camera.position, {
         duration: 1,
@@ -186,8 +186,7 @@ window.addEventListener("click", () => {
             myViewer.render();
         }
     });
-});
-
+}
 
 const jukebox = document.querySelector('.btnRetour');
 const jukeboxInterface = document.querySelector('.jukebox');
@@ -195,3 +194,24 @@ const jukeboxInterface = document.querySelector('.jukebox');
 jukebox.addEventListener('click', () => {
     jukeboxInterface.style.display = 'block';
 })
+
+const btnPrec = document.querySelector('.camera-precedent');
+const btnSuiv = document.querySelector('.camera-suivant');
+
+btnPrec.addEventListener('click', () => {
+    myViewer.indexCamera--;
+
+    if (myViewer.indexCamera < 0) {
+        myViewer.indexCamera = myViewer.cameraTargets.length - 1;
+    }
+
+    moveCamera();
+});
+
+btnSuiv.addEventListener('click', () => {
+    myViewer.indexCamera++;
+    moveCamera();
+});
+
+
+
