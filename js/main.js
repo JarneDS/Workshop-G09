@@ -252,17 +252,20 @@ document.querySelectorAll('.vinylHouseTxt').forEach(block => {
     const pauseBtn = block.querySelector('.boutonPause');
     const house = block.querySelector('.house');
     const vinylWrapper = block.querySelector('.vinylHouse');
+    const bgVinyl = block.querySelector('.bgPlaying');
 
     playBtn.addEventListener('click', () => {
         audio.play();
         house.classList.add('hidden');
         vinylWrapper.classList.add('playing');
+        bgVinyl.classList.add('open');
     });
 
     pauseBtn.addEventListener('click', () => {
         audio.pause();
         house.classList.remove('hidden');
         vinylWrapper.classList.remove('playing');
+        bgVinyl.classList.remove('open');
     });
 
 });
