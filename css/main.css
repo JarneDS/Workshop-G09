@@ -35,7 +35,7 @@ body, html {
     display: flex;
     justify-content: center;
     position: absolute;
-    z-index: 1000;
+    z-index: 1100;
     bottom: 50px;
 }
 
@@ -169,4 +169,14 @@ body, html {
 
 .qui__explications {
     display: none;
+}
+
+.lunettes {
+    position: absolute;
+    inset: 0;
+    z-index: 1000;
+    background: url("../assets/masque.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
