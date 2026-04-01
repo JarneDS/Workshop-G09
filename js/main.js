@@ -46,7 +46,7 @@ class Viewer {
 
     travelling() {
 
-        this.indexCamera = 0;
+        this.indexCamera = 1;
 
         const cam1 = gltf.scene.getObjectByName("camera1");
         const cam2 = gltf.scene.getObjectByName("camera2");
@@ -182,6 +182,9 @@ function moveCamera() {
                 target.getWorldQuaternion(new THREE.Quaternion())
             );
             myViewer.render();
+        },
+        onComplete: () => {
+            onCameraChange();
         }
     });
 }
@@ -207,6 +210,16 @@ function onClick3D(event) {
         if (obj.name === "Jukebox") {
             ouvrirJukebox();
         }
+    }
+}
+
+function onCameraChange() {
+    const lunettes = document.querySelector('.lunettes');
+
+    if (myViewer.indexCamera === 1) {
+        lunettes.style.display = "block";
+    } else {
+        lunettes.style.display = "none";
     }
 }
 
@@ -242,6 +255,11 @@ btnPrec.addEventListener('click', () => {
 
 btnSuiv.addEventListener('click', () => {
     myViewer.indexCamera++;
+
+    if (myViewer.indexCamera >= myViewer.cameraTargets.length) {
+        myViewer.indexCamera = 0;
+    }
+
     moveCamera();
 });
 
