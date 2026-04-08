@@ -235,11 +235,6 @@ jukebox.addEventListener('click', () => {
     jukeboxInterface.style.display = 'block';
 })
 
-const btnRetour = document.querySelector('.btnRetour');
-btnRetour.addEventListener('click', () => {
-    jukeboxInterface.style.display = 'none';
-});
-
 const btnPrec = document.querySelector('.camera-precedent');
 const btnSuiv = document.querySelector('.camera-suivant');
 
@@ -289,30 +284,35 @@ document.querySelectorAll('.vinylHouseTxt').forEach(block => {
 });
 
 const prenoms = document.querySelectorAll('.prenom');
-const btnRetour2 = document.querySelector('.btnRetour');
+let block_pres = document.querySelector('.presentations');
 
-// Track the currently open description
-let activeDescription = null;
+let activeBlock = null;
 
 prenoms.forEach(prenom => {
-    const description = prenom.nextElementSibling;
-
     prenom.addEventListener('click', () => {
-        // Close previously open description
-        if (activeDescription) {
-            activeDescription.classList.remove('open');
+        const targetId = prenom.dataset.target;
+        const block = document.getElementById(targetId);
+
+        if (!block) return;
+
+        if (activeBlock) {
+            activeBlock.classList.remove('open');
+            block_pres.classList.remove('open');
         }
 
-        // Open the clicked one
-        description.classList.add('open');
-        activeDescription = description;
+        block.classList.add('open');
+        activeBlock = block;
+        block_pres.classList.add('open');
     });
 });
 
-btnRetour2.addEventListener('click', () => {
-    if (activeDescription) {
-        activeDescription.classList.remove('open');
-        activeDescription = null;
+const retourPresentations = document.querySelector('.presentations .btnRetour');
+
+retourPresentations.addEventListener('click', () => {
+    if (activeBlock) {
+        activeBlock.classList.remove('open');
+        activeBlock = null;
     }
 });
+
 

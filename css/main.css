@@ -173,8 +173,27 @@ body, html {
     display: none;
 }
 
+.qui.open {
+    display: block;
+}
+
 .qui__explications {
     display: none;
+}
+
+.presentations {
+    display: none;
+}
+
+.presentations.open {
+    display: block;
+    position: absolute;
+    z-index: 1400;
+    inset: 20px;
+    background-color: rgb(255, 96, 31, .74);
+    border-radius: 20px;
+    padding: 10px;
+    border: 1px solid #F1F1F1;
 }
 
 .lunettes {
