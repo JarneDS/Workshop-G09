@@ -287,3 +287,32 @@ document.querySelectorAll('.vinylHouseTxt').forEach(block => {
     });
 
 });
+
+const prenoms = document.querySelectorAll('.prenom');
+const btnRetour2 = document.querySelector('.btnRetour');
+
+// Track the currently open description
+let activeDescription = null;
+
+prenoms.forEach(prenom => {
+    const description = prenom.nextElementSibling;
+
+    prenom.addEventListener('click', () => {
+        // Close previously open description
+        if (activeDescription) {
+            activeDescription.classList.remove('open');
+        }
+
+        // Open the clicked one
+        description.classList.add('open');
+        activeDescription = description;
+    });
+});
+
+btnRetour2.addEventListener('click', () => {
+    if (activeDescription) {
+        activeDescription.classList.remove('open');
+        activeDescription = null;
+    }
+});
+

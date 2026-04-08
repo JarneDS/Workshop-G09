@@ -161,6 +161,12 @@ body, html {
     font-size: 20px;
     text-align: center;
     color: #F1F1F1;
+    transition: all .3s ease-in-out;
+    cursor: pointer;
+}
+
+.prenom:hover {
+    color: #66143C;
 }
 
 .qui {
