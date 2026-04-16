@@ -232,7 +232,7 @@ const jukebox = document.querySelector('.btnRetour');
 const jukeboxInterface = document.querySelector('.jukebox');
 
 jukebox.addEventListener('click', () => {
-    jukeboxInterface.style.display = 'block';
+    jukeboxInterface.style.display = 'none';
 })
 
 const btnPrec = document.querySelector('.camera-precedent');
@@ -313,6 +313,8 @@ retourPresentations.addEventListener('click', () => {
         activeBlock.classList.remove('open');
         activeBlock = null;
     }
+
+    block_pres.classList.remove('open');
 });
 
 
