@@ -67,6 +67,7 @@ body, html {
     padding: 10px;
     border-radius: 10px;
     filter: drop-shadow(0 0 10px rgba(243, 219, 185, 0.5));
+    cursor: pointer;
 }
 
 .vinyles {
@@ -91,6 +92,10 @@ body, html {
     flex-direction: row;
     justify-content: center;
     gap: 20px;
+}
+
+.boutonPlay, .boutonPause {
+    cursor: pointer;
 }
 
 .vinylHouse {

@@ -78,6 +78,42 @@ class Viewer {
         directionalLight.lookAt( 0,0,0);
 
         this.scene.add( light, directionalLight );
+/*
+        const geometry = new THREE.CircleGeometry(0.5, 32);
+        const material = new THREE.MeshBasicMaterial({
+            color: 0xff0000,
+        });
+        this.circle = new THREE.Mesh(geometry, material);
+        this.circle.name = "interactiveCircle";
+
+        // position de base (à adapter)
+        this.circle.position.set(3.43, 0.95 + 1.5, -2.48);
+
+        this.scene.add(this.circle);
+*/
+        this.interactivePoints = [];
+
+        function createPoint(name, x, y, z) {
+            const geometry = new THREE.CircleGeometry(0.2, 32);
+            const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+            const point = new THREE.Mesh(geometry, material);
+
+            point.name = name;
+            point.position.set(x, y, z);
+
+            return point;
+        }
+
+        // Exemple : 3 points
+        this.interactivePoints.push(
+            createPoint("circle1", 3.43, 0.95 + 1.5, -2.48),
+            //createPoint("circle2", 1.2, 1.5, -4.1),
+            //createPoint("circle3", -2.5, 0.8, -3.3)
+        );
+
+        // Ajout à la scène
+        this.interactivePoints.forEach(p => this.scene.add(p));
+
 
         // Demander un rendu
         this.render();
@@ -132,6 +168,7 @@ class Viewer {
         this.populate();
         // Appele la fonction d'ajout d'éléments
         this.travelling();
+        this.animate();
     }
 
     resize() {
@@ -153,6 +190,17 @@ class Viewer {
         // Mettre à jour le moteur de rendu
         this.renderer.setSize(settings.sizes.w, settings.sizes.h);
         this.renderer.setPixelRatio(settings.sizes.dpr);
+
+        this.render();
+    }
+
+    animate() {
+        requestAnimationFrame(() => this.animate());
+
+        this.interactivePoints.forEach(point => {
+            point.lookAt(this.camera.position);
+            point.position.y = Math.sin(Date.now() * 0.002) * 0.1 + 1;
+        });
 
         this.render();
     }
@@ -202,16 +250,39 @@ function onClick3D(event) {
 
     raycaster.setFromCamera(mouse, myViewer.camera);
 
-    const intersects = raycaster.intersectObjects(gltf.scene.children, true);
+    const intersects = raycaster.intersectObjects(myViewer.scene.children, true);
 
     if (intersects.length > 0) {
         const obj = intersects[0].object;
 
-        if (obj.name === "Jukebox") {
-            ouvrirJukebox();
+        if (myViewer.interactivePoints.includes(obj)) {
+            console.log("Point interactif cliqué :", obj.name);
+            if (obj.name === "circle1") ouvrirJukebox();
+            //if (obj.name === "circle2") ouvrirPorte();
+            //if (obj.name === "circle3") afficherInfo();
         }
     }
 }
+
+settings.canvas.addEventListener("mousemove", onHover3D);
+
+function onHover3D(event) {
+    const rect = settings.canvas.getBoundingClientRect();
+    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, myViewer.camera);
+
+    const intersects = raycaster.intersectObjects(myViewer.scene.children, true);
+
+    const isHovering = intersects.some(i =>
+        myViewer.interactivePoints.includes(i.object)
+    );
+
+    settings.canvas.style.cursor = isHovering ? "pointer" : "default";
+
+}
+
 
 function onCameraChange() {
     const lunettes = document.querySelector('.lunettes');
