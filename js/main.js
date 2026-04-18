@@ -24,11 +24,51 @@ const gltf = await loader.loadAsync( "/assets/blockingAssemble.glb" );
 /*const textureLoader = new THREE.TextureLoader();
 const texture = await textureLoader.loadAsync( '/assets/baked.jpg' );
 */
-class Viewer {
+
+const jukebox = document.querySelector('.btnRetour');
+const jukeboxInterface = document.querySelector('.jukebox');
+
+class G9_Story {
     constructor(options) {
         this.canvas = options.canvas;
 
+        this.raycaster = new THREE.Raycaster();
+        this.mouse = new THREE.Vector2();
+        
         this.setRenderer(options);
+        
+        const btnPrec = document.querySelector('.camera-precedent');
+        const btnSuiv = document.querySelector('.camera-suivant');
+
+        btnPrec.addEventListener('click', () => {
+            this.indexCamera--;
+
+            if (this.indexCamera < 0) {
+                this.indexCamera = this.cameraTargets.length - 1;
+            }
+
+            this.moveCamera();
+        });
+
+        btnSuiv.addEventListener('click', () => {
+            this.indexCamera++;
+
+            if (this.indexCamera >= this.cameraTargets.length) {
+                this.indexCamera = 0;
+            }
+
+            this.moveCamera();
+        });
+
+        this.canvas.addEventListener("click", (e) => this.onClick3D(e));
+
+        this.canvas.addEventListener("mousemove", (e) => this.onHover3D(e));
+
+        jukebox.addEventListener('click', () => {
+            jukeboxInterface.style.display = 'none';
+        })
+
+        this.initUI();
     }
 
     updateCameraPosition() {
@@ -181,7 +221,7 @@ class Viewer {
         // à plus haute densité de pixel.
         settings.sizes.dpr = Math.min(window.devicePixelRatio, 2);
 
-        settings.canvas.style.aspectRatio = `${settings.sizes.w}/${settings.sizes.h}`;
+        this.canvas.style.aspectRatio = `${settings.sizes.w}/${settings.sizes.h}`;
 
         // Mettre à jour la camera
         this.camera.aspect = settings.sizes.w / settings.sizes.h;
@@ -204,188 +244,153 @@ class Viewer {
 
         this.render();
     }
+
+    moveCamera() {
+        const target = this.cameraTargets[
+            this.indexCamera % this.cameraTargets.length
+        ];
+
+        gsap.to(this.camera.position, {
+            duration: 1,
+            x: target.getWorldPosition(new THREE.Vector3()).x,
+            y: target.getWorldPosition(new THREE.Vector3()).y,
+            z: target.getWorldPosition(new THREE.Vector3()).z,
+            onUpdate: () => {
+                this.camera.quaternion.copy(
+                    target.getWorldQuaternion(new THREE.Quaternion())
+                );
+                this.render();
+            },
+            onComplete: () => {
+                this.onCameraChange();
+            }
+        });
+    }
+
+    /* https://threejs.org/docs/#Raycaster */
+    onClick3D(event) {
+        const rect = this.canvas.getBoundingClientRect();
+
+        this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+        this.raycaster.setFromCamera(this.mouse, this.camera);
+
+        const intersects = this.raycaster.intersectObjects(this.scene.children, true);
+
+        if (intersects.length > 0) {
+            const obj = intersects[0].object;
+
+            if (this.interactivePoints.includes(obj)) {
+                if (obj.name === "circle1") this.ouvrirJukebox();
+            }
+        }
+    }
+
+    onHover3D(event) {
+        const rect = this.canvas.getBoundingClientRect();
+
+        this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+        this.raycaster.setFromCamera(this.mouse, this.camera);
+
+        const intersects = this.raycaster.intersectObjects(this.scene.children, true);
+
+        const isHovering = intersects.some(i =>
+            this.interactivePoints.includes(i.object)
+        );
+
+        this.canvas.style.cursor = isHovering ? "pointer" : "default";
+    }
+
+
+    onCameraChange() {
+        const lunettes = document.querySelector('.lunettes');
+
+        if (this.indexCamera === 1) {
+            lunettes.style.display = "block";
+        } else {
+            lunettes.style.display = "none";
+        }
+    }
+
+    ouvrirJukebox() {
+        const jukeboxInterface = document.querySelector('.jukebox');
+        jukeboxInterface.style.display = 'block';
+    }
+
+    initUI() {
+
+        document.querySelectorAll('.vinylHouseTxt').forEach(block => {
+
+            const audio = block.querySelector('audio');
+            const playBtn = block.querySelector('.boutonPlay');
+            const pauseBtn = block.querySelector('.boutonPause');
+            const house = block.querySelector('.house');
+            const vinylWrapper = block.querySelector('.vinylHouse');
+            const bgVinyl = block.querySelector('.bgPlaying');
+
+            playBtn.addEventListener('click', () => {
+                audio.play();
+                house.classList.add('hidden');
+                vinylWrapper.classList.add('playing');
+                bgVinyl.classList.add('open');
+            });
+
+            pauseBtn.addEventListener('click', () => {
+                audio.pause();
+                house.classList.remove('hidden');
+                vinylWrapper.classList.remove('playing');
+                bgVinyl.classList.remove('open');
+            });
+
+        });
+
+        const prenoms = document.querySelectorAll('.prenom');
+        let block_pres = document.querySelector('.presentations');
+
+        let activeBlock = null;
+
+        prenoms.forEach(prenom => {
+            prenom.addEventListener('click', () => {
+                const targetId = prenom.dataset.target;
+                const block = document.getElementById(targetId);
+
+                if (!block) return;
+
+                if (activeBlock) {
+                    activeBlock.classList.remove('open');
+                    block_pres.classList.remove('open');
+                }
+
+                block.classList.add('open');
+                activeBlock = block;
+                block_pres.classList.add('open');
+            });
+        });
+
+        const retourPresentations = document.querySelector('.presentations .btnRetour');
+
+        retourPresentations.addEventListener('click', () => {
+            if (activeBlock) {
+                activeBlock.classList.remove('open');
+                activeBlock = null;
+            }
+
+            block_pres.classList.remove('open');
+        });
+    }
 }
 
-const myViewer = new Viewer(threejsOptions);
+const app = new G9_Story({
+    canvas: document.querySelector(".js-canvas-3d")
+});
 // myViewer.addGizmo(2);
 
 // Ajouter un event resize et appeler la fonction qui
 // gère les changements de tailles
 window.addEventListener("resize", () => {
-    myViewer.resize();
+    app.resize();
 });
-
-function moveCamera() {
-    const target = myViewer.cameraTargets[
-        myViewer.indexCamera % myViewer.cameraTargets.length
-    ];
-
-    gsap.to(myViewer.camera.position, {
-        duration: 1,
-        x: target.getWorldPosition(new THREE.Vector3()).x,
-        y: target.getWorldPosition(new THREE.Vector3()).y,
-        z: target.getWorldPosition(new THREE.Vector3()).z,
-        onUpdate: () => {
-            myViewer.camera.quaternion.copy(
-                target.getWorldQuaternion(new THREE.Quaternion())
-            );
-            myViewer.render();
-        },
-        onComplete: () => {
-            onCameraChange();
-        }
-    });
-}
-
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-
-settings.canvas.addEventListener("click", onClick3D);
-
-/* https://threejs.org/docs/#Raycaster */
-function onClick3D(event) {
-    const rect = settings.canvas.getBoundingClientRect();
-    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-    raycaster.setFromCamera(mouse, myViewer.camera);
-
-    const intersects = raycaster.intersectObjects(myViewer.scene.children, true);
-
-    if (intersects.length > 0) {
-        const obj = intersects[0].object;
-
-        if (myViewer.interactivePoints.includes(obj)) {
-            console.log("Point interactif cliqué :", obj.name);
-            if (obj.name === "circle1") ouvrirJukebox();
-            //if (obj.name === "circle2") ouvrirPorte();
-            //if (obj.name === "circle3") afficherInfo();
-        }
-    }
-}
-
-settings.canvas.addEventListener("mousemove", onHover3D);
-
-function onHover3D(event) {
-    const rect = settings.canvas.getBoundingClientRect();
-    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-    raycaster.setFromCamera(mouse, myViewer.camera);
-
-    const intersects = raycaster.intersectObjects(myViewer.scene.children, true);
-
-    const isHovering = intersects.some(i =>
-        myViewer.interactivePoints.includes(i.object)
-    );
-
-    settings.canvas.style.cursor = isHovering ? "pointer" : "default";
-
-}
-
-
-function onCameraChange() {
-    const lunettes = document.querySelector('.lunettes');
-
-    if (myViewer.indexCamera === 1) {
-        lunettes.style.display = "block";
-    } else {
-        lunettes.style.display = "none";
-    }
-}
-
-function ouvrirJukebox() {
-    const jukeboxInterface = document.querySelector('.jukebox');
-    jukeboxInterface.style.display = 'block';
-}
-
-const jukebox = document.querySelector('.btnRetour');
-const jukeboxInterface = document.querySelector('.jukebox');
-
-jukebox.addEventListener('click', () => {
-    jukeboxInterface.style.display = 'none';
-})
-
-const btnPrec = document.querySelector('.camera-precedent');
-const btnSuiv = document.querySelector('.camera-suivant');
-
-btnPrec.addEventListener('click', () => {
-    myViewer.indexCamera--;
-
-    if (myViewer.indexCamera < 0) {
-        myViewer.indexCamera = myViewer.cameraTargets.length - 1;
-    }
-
-    moveCamera();
-});
-
-btnSuiv.addEventListener('click', () => {
-    myViewer.indexCamera++;
-
-    if (myViewer.indexCamera >= myViewer.cameraTargets.length) {
-        myViewer.indexCamera = 0;
-    }
-
-    moveCamera();
-});
-
-document.querySelectorAll('.vinylHouseTxt').forEach(block => {
-
-    const audio = block.querySelector('audio');
-    const playBtn = block.querySelector('.boutonPlay');
-    const pauseBtn = block.querySelector('.boutonPause');
-    const house = block.querySelector('.house');
-    const vinylWrapper = block.querySelector('.vinylHouse');
-    const bgVinyl = block.querySelector('.bgPlaying');
-
-    playBtn.addEventListener('click', () => {
-        audio.play();
-        house.classList.add('hidden');
-        vinylWrapper.classList.add('playing');
-        bgVinyl.classList.add('open');
-    });
-
-    pauseBtn.addEventListener('click', () => {
-        audio.pause();
-        house.classList.remove('hidden');
-        vinylWrapper.classList.remove('playing');
-        bgVinyl.classList.remove('open');
-    });
-
-});
-
-const prenoms = document.querySelectorAll('.prenom');
-let block_pres = document.querySelector('.presentations');
-
-let activeBlock = null;
-
-prenoms.forEach(prenom => {
-    prenom.addEventListener('click', () => {
-        const targetId = prenom.dataset.target;
-        const block = document.getElementById(targetId);
-
-        if (!block) return;
-
-        if (activeBlock) {
-            activeBlock.classList.remove('open');
-            block_pres.classList.remove('open');
-        }
-
-        block.classList.add('open');
-        activeBlock = block;
-        block_pres.classList.add('open');
-    });
-});
-
-const retourPresentations = document.querySelector('.presentations .btnRetour');
-
-retourPresentations.addEventListener('click', () => {
-    if (activeBlock) {
-        activeBlock.classList.remove('open');
-        activeBlock = null;
-    }
-
-    block_pres.classList.remove('open');
-});
-
 
