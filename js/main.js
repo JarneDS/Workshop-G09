@@ -19,7 +19,9 @@ const threejsOptions = {
 //// VIEWER CLASS
 
 const loader = new GLTFLoader();
-const gltf = await loader.loadAsync( "/assets/blockingAssemble.glb" );
+
+const interiorGLTF = await loader.loadAsync("/assets/G9_SCENE3.glb");
+const exteriorGLTF = await loader.loadAsync("/assets/exterieur4.glb");
 
 /*const textureLoader = new THREE.TextureLoader();
 const texture = await textureLoader.loadAsync( '/assets/baked.jpg' );
@@ -31,6 +33,8 @@ const jukeboxInterface = document.querySelector('.jukebox');
 class G9_Story {
     constructor(options) {
         this.canvas = options.canvas;
+        this.interior = options.interior;
+        this.exterior = options.exterior;
 
         this.raycaster = new THREE.Raycaster();
         this.mouse = new THREE.Vector2();
@@ -85,19 +89,19 @@ class G9_Story {
 
 
     travelling() {
-
         this.indexCamera = 1;
 
-        const cam1 = gltf.scene.getObjectByName("camera1");
-        const cam2 = gltf.scene.getObjectByName("camera2");
-        
+        const cam1 = this.interior.getObjectByName("camera1");
+        const cam2 = this.interior.getObjectByName("camera2");
+
         this.cameraTargets = [cam1, cam2];
         this.updateCameraPosition();
         this.render();
     }
 
     populate() {        
-        this.scene.add(gltf.scene);
+        this.scene.add(this.interior);
+        this.scene.add(this.exterior);
 
         /*const baked = this.scene.getObjectByName('baked');
         baked.material = new THREE.MeshBasicMaterial({
@@ -422,8 +426,11 @@ class G9_Story {
 }
 
 const app = new G9_Story({
-    canvas: document.querySelector(".js-canvas-3d")
+    canvas: document.querySelector(".js-canvas-3d"),
+    interior: interiorGLTF.scene,
+    exterior: exteriorGLTF.scene
 });
+
 // myViewer.addGizmo(2);
 
 // Ajouter un event resize et appeler la fonction qui
