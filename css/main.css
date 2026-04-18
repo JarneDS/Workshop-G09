@@ -30,8 +30,11 @@ body, html {
     left: 50%;
     translate: -50% -50%;
 }
+p {
+    max-width: 60%;
+}
 
-span {
+span, li {
     display: block;
     margin: 12px 0 27px;
 }
@@ -184,9 +187,22 @@ span {
     display: none;
 }
 
-.qui.open, .qui__explications.open {
+.qui.open {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    transform: translateY(10%);
+    text-align: center;
+    align-items: center;
+}
+
+.qui__explications.open {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    transform: translateY(40%);
+    text-align: center;
+    align-items: center;
 }
 
 .presentations, .presentations__details {
@@ -210,19 +226,30 @@ span {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #F1F1F1;
     text-align: center;
+}
+
+.qui__infos {
+    background-color: #F1F1F1;
+    width: 320px;
+    padding: 30px;
+    border-radius: 0 0 20px 20px;
 }
 
 .imageMembre {
     width: 320px;
+    border-radius: 20px 20px 0 0;
 }
 
+.savoirPlus {
+    cursor: pointer;
+}
 
-
-
-
-
+.qui__explications p {
+    background-color: #F1F1F1;
+    padding: 30px;
+    border-radius: 20px;
+}
 
 .lunettes {
     position: absolute;
