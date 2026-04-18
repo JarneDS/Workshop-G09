@@ -156,11 +156,11 @@ span, li {
     border-radius: inherit;
     padding: 2px;
     background: linear-gradient(135deg, rgba(255,255,255,1), rgba(254,147,40,1));
-    -webkit-mask:
+    /*-webkit-mask:
         linear-gradient(#fff 0 0) content-box,
         linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
-            mask-composite: exclude;
+            mask-composite: exclude;*/
 }
 
 .bgPlaying.open {
