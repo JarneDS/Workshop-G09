@@ -174,23 +174,19 @@ body, html {
     color: #66143C;
 }
 
-.qui {
+.qui, .qui__explications {
     display: none;
 }
 
-.qui.open {
+.qui.open, .qui__explications.open {
     display: block;
 }
 
-.qui__explications {
+.presentations, .presentations__details {
     display: none;
 }
 
-.presentations {
-    display: none;
-}
-
-.presentations.open {
+.presentations.open, .presentations__details.open {
     display: block;
     position: absolute;
     z-index: 1400;

@@ -367,6 +367,7 @@ class G9_Story {
                 block.classList.add('open');
                 activeBlock = block;
                 block_pres.classList.add('open');
+                jukeboxInterface.style.display = 'none';
             });
         });
 
@@ -379,6 +380,43 @@ class G9_Story {
             }
 
             block_pres.classList.remove('open');
+            jukeboxInterface.style.display = 'block';
+        });
+
+        const savoirPlusBtn = document.querySelectorAll('.savoirPlus');
+        let block_pres2 = document.querySelector('.presentations__details');
+
+        let activeBlock2 = null;
+
+        savoirPlusBtn.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetId2 = btn.dataset.target;
+                const block2 = document.getElementById(targetId2);
+
+                if (!block2) return;
+
+                if (activeBlock2) {
+                    activeBlock2.classList.remove('open');
+                    block_pres2.classList.remove('open');
+                }
+
+                block2.classList.add('open');
+                activeBlock2 = block2;
+                block_pres.classList.remove('open');
+                block_pres2.classList.add('open');
+            });
+        });
+
+        const retourPresentations2 = document.querySelector('.presentations__details .btnRetour');
+
+        retourPresentations2.addEventListener('click', () => {
+            if (activeBlock2) {
+                activeBlock2.classList.remove('open');
+                activeBlock2 = null;
+            }
+
+            block_pres2.classList.remove('open');
+            block_pres.classList.add('open');
         });
     }
 }
