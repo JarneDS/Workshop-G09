@@ -60,6 +60,28 @@ class G9_Story {
             this.moveCamera();
         });
 
+        // Listener audio
+        this.listener = new THREE.AudioListener();
+        this.camera.add(this.listener);
+
+        // Son positionnel
+        this.maskSound = new THREE.PositionalAudio(this.listener);
+
+        const audioLoader = new THREE.AudioLoader();
+        audioLoader.load('sounds/oxygen_mask_breathing.mp3', (buffer) => {
+            this.maskSound.setBuffer(buffer);
+            this.maskSound.setRefDistance(1);
+            this.maskSound.setLoop(true);
+            this.maskSound.setVolume(1.0);
+
+            // On attache le son à la caméra pour être sûr de l'entendre
+            this.camera.add(this.maskSound);
+
+            if (this.indexCamera === 0) {
+                this.maskSound.play();
+            }
+        });
+
         this.canvas.addEventListener("click", (e) => this.onClick3D(e));
 
         this.canvas.addEventListener("mousemove", (e) => this.onHover3D(e));
@@ -88,11 +110,11 @@ class G9_Story {
         this.indexCamera = 0;
 
         const cam0 = this.exterior.getObjectByName("G9_SM_Camera_0");
-        const cam1 = this.interior.getObjectByName("G9_SM_Camera_1");
-        const cam2 = this.interior.getObjectByName("G9_SM_Camera_2");
+        const cam5 = this.interior.getObjectByName("G9_SM_Camera_1");
+        const cam4 = this.interior.getObjectByName("G9_SM_Camera_2");
         const cam3 = this.interior.getObjectByName("G9_SM_Camera_3");
-        const cam4 = this.interior.getObjectByName("G9_SM_Camera_4");
-        const cam5 = this.interior.getObjectByName("G9_SM_Camera_5");
+        const cam1 = this.interior.getObjectByName("G9_SM_Camera_4");
+        const cam2 = this.interior.getObjectByName("G9_SM_Camera_5");
         const cam6 = this.interior.getObjectByName("G9_SM_Camera_6");
 
         this.cameraTargets = [cam0, cam1, cam2, cam3, cam4, cam5, cam6];
@@ -289,10 +311,18 @@ class G9_Story {
             lunettes.style.display = "block";
             this.interior.visible = false;
             this.exterior.visible = true;
+
+            if (this.maskSound && !this.maskSound.isPlaying) {
+                this.maskSound.play();
+            }
         } else {
             lunettes.style.display = "none";
             this.interior.visible = true;
             this.exterior.visible = false;
+
+            if (this.maskSound && this.maskSound.isPlaying) {
+                this.maskSound.stop();
+            }
         }
     }
 
