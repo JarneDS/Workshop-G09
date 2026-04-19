@@ -20,8 +20,8 @@ const threejsOptions = {
 
 const loader = new GLTFLoader();
 
-const interiorGLTF = await loader.loadAsync("assets/G09_SM_scene_combined_int.glb");
-const exteriorGLTF = await loader.loadAsync("assets/G09_SM_scene_ext.glb");
+const interiorGLTF = await loader.loadAsync("G09_SM_scene_combined_int.glb");
+const exteriorGLTF = await loader.loadAsync("G09_SM_scene_ext.glb");
 
 const jukebox = document.querySelector('.btnRetour');
 const jukeboxInterface = document.querySelector('.jukebox');

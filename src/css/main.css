@@ -59,6 +59,10 @@ span, li {
     color: #F1F1F1;
 }
 
+.camera-suivant, .camera-precedent {
+    cursor: pointer;
+}
+
 .jukebox {
     display: none;
     position: absolute;
@@ -255,7 +259,7 @@ span, li {
     position: absolute;
     inset: 0;
     z-index: 1000;
-    background: url("../assets/masque.png");
+    background: url("../masque.png");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
