@@ -30,13 +30,27 @@ body, html {
     left: 50%;
     translate: -50% -50%;
 }
+
+h1 {
+    font-size: 36px;
+    margin: 43px 0;
+}
+
+h2 {
+    font-size: 28px;
+    margin: 35px 0;
+}
+
 p {
     max-width: 60%;
+    font-size: 18px;
+    margin: 21px 0;
 }
 
 span, li {
     display: block;
     margin: 12px 0 27px;
+    font-size: 18px;
 }
 
 .camera-controles__container {
@@ -62,6 +76,7 @@ span, li {
 
 .camera-controles p {
     align-self: center;
+    margin: 0;
 }
 
 .camera-suivant, .camera-precedent {
@@ -311,4 +326,20 @@ span, li {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+}
+
+.porteTxt, .telephoneTxt {
+    background-color: #F1F1F1;
+    border-radius: 20px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 40px 20%;
+
+}
+
+.porteTxt p, .telephoneTxt p {
+    max-width: 100%;
 }
