@@ -106,6 +106,19 @@
                         </div>
                         <div class="vinylHouseTxt">
                             <div class="boutonsPlayPause">
+                                <audio id="player" src="assets/sounds/Clair_Obscur-Expedition_33-Simon-The_Divergent_Star.mp3"></audio>
+                                <img src="assets/playButton.svg" alt="play bouton" class="boutonPlay">
+                                <img src="assets/pauseButton.svg" alt="pause bouton" class="boutonPause">
+                            </div>
+                            <div class="vinylHouse">
+                                <img src="assets/houseVinyle.png" alt="houseVinyle" class="house">
+                                <div class="bgPlaying"></div>
+                                <img src="assets/vinyl_Emeline.png" alt="vinyl" class="vinyl">
+                            </div>
+                            <button class="prenom" data-target="emeline">Emeline</button>
+                        </div>
+                        <div class="vinylHouseTxt">
+                            <div class="boutonsPlayPause">
                                 <audio id="player" src="assets/sounds/test.mp3"></audio>
                                 <img src="assets/playButton.svg" alt="play bouton" class="boutonPlay">
                                 <img src="assets/pauseButton.svg" alt="pause bouton" class="boutonPause">
@@ -115,7 +128,7 @@
                                 <div class="bgPlaying"></div>
                                 <img src="assets/vinyl.png" alt="vinyl" class="vinyl">
                             </div>
-                            <button class="prenom" data-target="emeline">Emeline</button>
+                            <button class="prenom" data-target="zelie">Zélie</button>
                         </div>
                     </div>
                 </section>
@@ -123,7 +136,7 @@
                     <button class="btnRetour">← Retour</button>
                     <div id="jarne" class="qui">
                         <div class="qui__container">
-                            <img src="" alt="image membre" class="imageMembre">
+                            <img src="assets/Jarne.JPG" alt="image membre" class="imageMembre">
                             <div class="qui__infos">
                                 <ul>
                                     <li>Jarne</li>
@@ -171,7 +184,7 @@
                     </div>
                     <div id="lisa" class="qui">
                         <div class="qui__container">
-                            <img src="" alt="image membre" class="imageMembre">
+                            <img src="assets/404.jpg" alt="image membre" class="imageMembre">
                             <div class="qui__infos">
                                 <ul>
                                     <li>Lisa</li>
@@ -183,7 +196,7 @@
                     </div>
                     <div id="alana" class="qui">
                         <div class="qui__container">
-                            <img src="" alt="image membre" class="imageMembre">
+                            <img src="assets/404.jpg" alt="image membre" class="imageMembre">
                             <div class="qui__infos">
                                 <ul>
                                     <li>Alana</li>
@@ -205,11 +218,23 @@
                             </div>
                         </div>
                     </div>
+                    <div id="zelie" class="qui">
+                        <div class="qui__container">
+                            <img src="assets/404.jpg" alt="image membre" class="imageMembre">
+                            <div class="qui__infos">
+                                <ul>
+                                    <li>Zélie</li>
+                                    <li>Développeuse 3D</li>
+                                    <li><button data-target="zelie__explications" class="savoirPlus">En savoir plus →</button></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </section>
                 <section class="presentations__details">
                     <button class="btnRetour">← Retour</button>
                     <div id="jarne__explications" class="qui__explications">
-                        <p><span>Je suis un jeune étudiant en dernière année, travailleur et capable de respecter les délais.</span><span>J'aime les nouveaux défis et je suis capable de gérer un projet de A à Z, de la création du visuelle de l’interface web au codage de la page.</span></p>
+                        <p><span>Je suis un jeune étudiant en dernière année, travailleur et capable de respecter les délais.</span><span>J'aime les nouveaux défis et je suis capable de gérer un projet de A à Z, de la création du visuelle de l’interface web au codage de la page.</span><span>Ma musique : Joe Jonas, Kevin Jonas, Nick Jonas - Heart and Soul (From "Camp Rock 2: The Final Jam")</span><span>J'ai choisi cette musique pour cause de l'ambiance qu'elle apporte. J'adore ce style de musique, les guitares, .... Cette chanson a tout ce qu'il&nbsp;faut.</span></p>
                     </div>
                     <div id="andrea__explications" class="qui__explications">
                         <p><span>Je m’appelle Andrea, j’ai 24 ans et ça fait depuis la 5e secondaire que je fais de l’infographie. J’adore le design et de pouvoir créer quelque chose à partir de rien.</span><span>J’ai vécu tout ma vie à Bruxelles, c’est pour cela que j’ai décidé de changer de ville pour les hautes études, comme Namur. J’adore voyager, sortir et de profiter. J'aime faire du sport et mon sport préférer est le surf.</span><span>Musique : « 1979 » de The Smashing Pumpkins</span><span>Pourquoi cette musique : j’ai écouté cette musique la première fois en 2022, vers la fin de ma dernière année scolaire. Elle m’a accompagné pendant tout l’été lors de mes voyages, et j’en ai fait beaucoup cette année-là. C’était un des rares moments dans ma vie ouu j’étais très heureux. Je suis arrivé à l’HEAJ en 2022 et cette année (2026) est la dernière donc pour boucler la boucle, je voulais mettre cette musique</span></p>
@@ -221,13 +246,16 @@
                         <p><span>Hello</span><span>Comment</span></p>
                     </div>
                     <div id="lisa__explications" class="qui__explications">
-                        <p><span>Hello</span><span>Comment</span></p>
+                        <p><span>Abandonnée</span></p>
                     </div>
                     <div id="alana__explications" class="qui__explications">
-                        <p><span>Hello</span><span>Comment</span></p>
+                        <p><span>Abandonnée</span></p>
                     </div>
                     <div id="emeline__explications" class="qui__explications">
                         <p><span>Je m’appelle Emeline, étudiante de 21ans en animation 3D et musicienne, j’ai fait mes études secondaires a Charleroi et ai toujours été passionnée des arts. Je peins aussi, joue aux jeux vidéo, et beaucoup trop d’autre choses pour quelqu’un qui n’a que 24h dans une journée.</span><span>Chanson- Simon, The divergent star – clair obscur expedition 33 sandfall interactive.</span><span>J’ai choisi cette musique parce que c’est un des mes ost préférés et une que je l’apprends au violon en ce moment.</span></p>
+                    </div>
+                    <div id="zelie__explications" class="qui__explications">
+                        <p><span>Abandonnée</span></p>
                     </div>
                 </section>
             </main>
