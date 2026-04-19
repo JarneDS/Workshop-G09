@@ -174,12 +174,6 @@ class G9_Story {
         // Recule notre camera pour qu'on puisse voir le centre de la scene
         this.camera.position.z = 10;
 
-        // OrbitControls
-        // this.controls = new OrbitControls( this.camera, this.renderer.domElement );
-        // this.controls.addEventListener( 'change', () => {
-        //     this.render();
-        // } );
-
         // Crée notre scene et y rajoute notre camera
         this.scene = new THREE.Scene();
         this.scene.add(this.camera);
@@ -190,6 +184,7 @@ class G9_Story {
         this.populate();
         // Appele la fonction d'ajout d'éléments
         this.travelling();
+        this.onCameraChange();
         this.animate();
     }
 
@@ -292,8 +287,12 @@ class G9_Story {
 
         if (this.indexCamera === 0) {
             lunettes.style.display = "block";
+            this.interior.visible = false;
+            this.exterior.visible = true;
         } else {
             lunettes.style.display = "none";
+            this.interior.visible = true;
+            this.exterior.visible = false;
         }
     }
 

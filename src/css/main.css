@@ -43,6 +43,7 @@ span, li {
     width: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
     position: absolute;
     z-index: 1100;
     bottom: 50px;
@@ -59,8 +60,17 @@ span, li {
     color: #F1F1F1;
 }
 
+.camera-controles p {
+    align-self: center;
+}
+
 .camera-suivant, .camera-precedent {
     cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .jukebox {
@@ -224,6 +234,48 @@ span, li {
     border-radius: 20px;
     padding: 10px;
     border: 1px solid #F1F1F1;
+}
+
+.fleur1,
+.fleur2,
+.fleur3,
+.fleur4,
+.fleur5,
+.fleur6 {
+    position: absolute;
+    z-index: 1500;
+    width: 170px;
+    pointer-events: none;
+}
+
+.fleur1 {
+    top: 10%;
+    left: 15%;
+}
+
+.fleur2 {
+    top: 40%;
+    left: 10%;
+}
+
+.fleur3 {
+    top: 70%;
+    left: 25%;
+}
+
+.fleur4 {
+    top: 70%;
+    left: 65%;
+}
+
+.fleur5 {
+    top: 40%;
+    left: 80%;
+}
+
+.fleur6 {
+    top: 10%;
+    left: 75%;
 }
 
 .qui__container {
