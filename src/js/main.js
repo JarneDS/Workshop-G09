@@ -110,14 +110,13 @@ class G9_Story {
         this.indexCamera = 0;
 
         const cam0 = this.exterior.getObjectByName("G9_SM_Camera_0");
-        const cam5 = this.interior.getObjectByName("G9_SM_Camera_1");
-        const cam4 = this.interior.getObjectByName("G9_SM_Camera_2");
-        const cam3 = this.interior.getObjectByName("G9_SM_Camera_3");
+        const cam4 = this.interior.getObjectByName("G9_SM_Camera_1");
+        const cam3 = this.interior.getObjectByName("G9_SM_Camera_2");
+        const cam2 = this.interior.getObjectByName("G9_SM_Camera_3");
         const cam1 = this.interior.getObjectByName("G9_SM_Camera_4");
-        const cam2 = this.interior.getObjectByName("G9_SM_Camera_5");
-        const cam6 = this.interior.getObjectByName("G9_SM_Camera_6");
+        const cam5 = this.interior.getObjectByName("G9_SM_Camera_5");
 
-        this.cameraTargets = [cam0, cam1, cam2, cam3, cam4, cam5, cam6];
+        this.cameraTargets = [cam0, cam1, cam2, cam3, cam4, cam5];
 
         this.cameraTargets.forEach(cam => {
             if (cam) cam.visible = false;
