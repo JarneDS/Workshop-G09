@@ -154,8 +154,8 @@ class G9_Story {
 
         this.interactivePoints.push(
             createPoint("circle1", -0.9, 0.5906563997268677 + 1.5, -3.4),
-            //createPoint("circle2", 1.2, 1.5, -4.1),
-            //createPoint("circle3", -2.5, 0.8, -3.3)
+            createPoint("circle2", 1.6, -5.6 + 1.5, 5.1),
+            createPoint("circle3", -3, 0.8, -2.8)
         );
 
         this.interactivePoints.forEach(p => this.scene.add(p));
@@ -282,6 +282,8 @@ class G9_Story {
 
             if (this.interactivePoints.includes(obj)) {
                 if (obj.name === "circle1") this.ouvrirJukebox();
+                if (obj.name === "circle2") this.ouvrirTelephone();
+                if (obj.name === "circle3") this.ouvrirPorte();
             }
         }
     }
@@ -329,6 +331,16 @@ class G9_Story {
     ouvrirJukebox() {
         const jukeboxInterface = document.querySelector('.jukebox');
         jukeboxInterface.style.display = 'block';
+    }
+
+    ouvrirTelephone() {
+        const telInterface = document.querySelector('.telephone');
+        telInterface.style.display = 'block';
+    }
+
+    ouvrirPorte() {
+        const porteInterface = document.querySelector('.porte');
+        porteInterface.style.display = 'block';
     }
 
     initUI() {
@@ -428,6 +440,18 @@ class G9_Story {
 
             block_pres2.classList.remove('open');
             block_pres.classList.add('open');
+        });
+
+        const retourTelephone = document.querySelector('.telephone .btnRetour');
+        const telInterface = document.querySelector('.telephone');
+        retourTelephone.addEventListener('click', () => {
+            telInterface.style.display = 'none';
+        });
+
+        const retourPorte = document.querySelector('.porte .btnRetour');
+        const porteInterface = document.querySelector('.porte');
+        retourPorte.addEventListener('click', () => {
+            porteInterface.style.display = 'none';
         });
     }
 }
