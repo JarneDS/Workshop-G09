@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
     root: 'src',
-    base: '/projets/TFE/',
+    base: '/projets/Workshop-G09/',
     publicDir: '../public',
     build: {
         outDir: '../dist',
