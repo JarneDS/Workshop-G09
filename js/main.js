@@ -20,12 +20,8 @@ const threejsOptions = {
 
 const loader = new GLTFLoader();
 
-const interiorGLTF = await loader.loadAsync("/assets/G9_SCENE3.glb");
-const exteriorGLTF = await loader.loadAsync("/assets/exterieur4.glb");
-
-/*const textureLoader = new THREE.TextureLoader();
-const texture = await textureLoader.loadAsync( '/assets/baked.jpg' );
-*/
+const interiorGLTF = await loader.loadAsync("/assets/G09_SM_scene_combined_int.glb");
+const exteriorGLTF = await loader.loadAsync("/assets/G09_SM_scene_ext.glb");
 
 const jukebox = document.querySelector('.btnRetour');
 const jukeboxInterface = document.querySelector('.jukebox');
@@ -91,10 +87,20 @@ class G9_Story {
     travelling() {
         this.indexCamera = 1;
 
-        const cam1 = this.interior.getObjectByName("camera1");
-        const cam2 = this.interior.getObjectByName("camera2");
+        const cam0 = this.exterior.getObjectByName("G9_SM_Camera_0");
+        const cam1 = this.interior.getObjectByName("G9_SM_Camera_1");
+        const cam2 = this.interior.getObjectByName("G9_SM_Camera_2");
+        const cam3 = this.interior.getObjectByName("G9_SM_Camera_3");
+        const cam4 = this.interior.getObjectByName("G9_SM_Camera_4");
+        const cam5 = this.interior.getObjectByName("G9_SM_Camera_5");
+        const cam6 = this.interior.getObjectByName("G9_SM_Camera_6");
 
-        this.cameraTargets = [cam1, cam2];
+        this.cameraTargets = [cam0, cam1, cam2, cam3, cam4, cam5, cam6];
+
+        this.cameraTargets.forEach(cam => {
+            if (cam) cam.visible = false;
+        });
+
         this.updateCameraPosition();
         this.render();
     }
@@ -103,18 +109,6 @@ class G9_Story {
         this.scene.add(this.interior);
         this.scene.add(this.exterior);
 
-        /*const baked = this.scene.getObjectByName('baked');
-        baked.material = new THREE.MeshBasicMaterial({
-            map: texture
-        });*/
-
-        //baked.material.map.flipY = false;
-
-        // this.camera.position.set( this.cube1.position.x, this.cube1.position.y, this.cube1.position.z );
-        // this.camera.lookAt( 0,0, 0);
-
-        // this.scene.add( this.cube1, this.cube2 );
-
         const light = new THREE.AmbientLight({color: 'white', intensity: 1});
         const directionalLight = new THREE.DirectionalLight( {color: 'white', intensity: 1} );
         directionalLight.position.x = 2;
@@ -122,19 +116,7 @@ class G9_Story {
         directionalLight.lookAt( 0,0,0);
 
         this.scene.add( light, directionalLight );
-/*
-        const geometry = new THREE.CircleGeometry(0.5, 32);
-        const material = new THREE.MeshBasicMaterial({
-            color: 0xff0000,
-        });
-        this.circle = new THREE.Mesh(geometry, material);
-        this.circle.name = "interactiveCircle";
 
-        // position de base (à adapter)
-        this.circle.position.set(3.43, 0.95 + 1.5, -2.48);
-
-        this.scene.add(this.circle);
-*/
         this.interactivePoints = [];
 
         function createPoint(name, x, y, z) {
@@ -148,18 +130,14 @@ class G9_Story {
             return point;
         }
 
-        // Exemple : 3 points
         this.interactivePoints.push(
-            createPoint("circle1", 3.43, 0.95 + 1.5, -2.48),
+            createPoint("circle1", -0.9, 0.5906563997268677 + 1.5, -3.4),
             //createPoint("circle2", 1.2, 1.5, -4.1),
             //createPoint("circle3", -2.5, 0.8, -3.3)
         );
 
-        // Ajout à la scène
         this.interactivePoints.forEach(p => this.scene.add(p));
 
-
-        // Demander un rendu
         this.render();
     }
 
@@ -310,13 +288,13 @@ class G9_Story {
 
 
     onCameraChange() {
-        const lunettes = document.querySelector('.lunettes');
+        /*const lunettes = document.querySelector('.lunettes');
 
         if (this.indexCamera === 1) {
             lunettes.style.display = "block";
         } else {
             lunettes.style.display = "none";
-        }
+        }*/
     }
 
     ouvrirJukebox() {
