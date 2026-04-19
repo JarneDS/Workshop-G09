@@ -20,8 +20,8 @@ const threejsOptions = {
 
 const loader = new GLTFLoader();
 
-const interiorGLTF = await loader.loadAsync("/assets/G09_SM_scene_combined_int.glb");
-const exteriorGLTF = await loader.loadAsync("/assets/G09_SM_scene_ext.glb");
+const interiorGLTF = await loader.loadAsync("assets/G09_SM_scene_combined_int.glb");
+const exteriorGLTF = await loader.loadAsync("assets/G09_SM_scene_ext.glb");
 
 const jukebox = document.querySelector('.btnRetour');
 const jukeboxInterface = document.querySelector('.jukebox');
@@ -85,7 +85,7 @@ class G9_Story {
 
 
     travelling() {
-        this.indexCamera = 1;
+        this.indexCamera = 0;
 
         const cam0 = this.exterior.getObjectByName("G9_SM_Camera_0");
         const cam1 = this.interior.getObjectByName("G9_SM_Camera_1");
@@ -288,13 +288,13 @@ class G9_Story {
 
 
     onCameraChange() {
-        /*const lunettes = document.querySelector('.lunettes');
+        const lunettes = document.querySelector('.lunettes');
 
-        if (this.indexCamera === 1) {
+        if (this.indexCamera === 0) {
             lunettes.style.display = "block";
         } else {
             lunettes.style.display = "none";
-        }*/
+        }
     }
 
     ouvrirJukebox() {
