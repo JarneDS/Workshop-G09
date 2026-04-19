@@ -135,7 +135,7 @@ span, li {
 .vinyl {
     position: absolute;
     width: 182px;
-    top: 48%;
+    top: 49%;
     left: 50%;
     transform: translate(-20%, -50%);
     z-index: 1200;
@@ -183,6 +183,7 @@ span, li {
 
 .vinylHouse.playing .vinyl {
     transform: translate(-38%, -50%) rotate(360deg);
+    top: 47%;
 }
 
 .prenom {
