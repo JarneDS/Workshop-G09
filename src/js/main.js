@@ -133,6 +133,36 @@ class G9_Story {
         this.scene.add(this.exterior);
         this.scene.add(this.vitres);
 
+        this.vitres.traverse((mesh) => {
+            if (mesh.isMesh) {
+                const meshMap = mesh.material.map;
+
+                // Vérifie si le nom du mesh correspond à l'un des matériaux vitres
+                const isVitre =
+                    mesh.name === "G9_SM_Vitres1_baked" ||
+                    mesh.name === "G9_SM_Vitres2_baked" ||
+                    mesh.name === "G9_SM_Vitres3_baked" ||
+                    mesh.name === "G9_SM_Vitres4_baked";
+
+                let newMaterial;
+
+                if (isVitre) {
+                    newMaterial = new THREE.MeshLambertMaterial({
+                        map: meshMap,
+                        emissive: 'white',
+                        emissiveIntensity: 0.4,
+                        emissiveMap: meshMap
+                    });
+                } else {
+                    newMaterial = new THREE.MeshLambertMaterial({
+                        map: meshMap
+                    });
+                }
+
+                mesh.material = newMaterial;
+            }
+        });
+
         const light = new THREE.AmbientLight({color: 'white', intensity: 1});
         const directionalLight = new THREE.DirectionalLight( {color: 'white', intensity: 1} );
         directionalLight.position.x = 2;
