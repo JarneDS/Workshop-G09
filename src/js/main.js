@@ -24,7 +24,7 @@ const interiorGLTF = await loader.loadAsync("G09_SM_scene_combined_int.glb");
 const exteriorGLTF = await loader.loadAsync("G09_SM_scene_ext.glb");
 const vitresGLTF = await loader.loadAsync("G09_SM_vitres.glb");
 
-const jukebox = document.querySelector('.btnRetour');
+const jukebox = document.querySelector('.btnRetourJukebox');
 const jukeboxInterface = document.querySelector('.jukebox');
 
 class G9_Story {
@@ -310,9 +310,11 @@ class G9_Story {
         const intersects = this.raycaster.intersectObjects(this.scene.children, true);
 
         if (intersects.length > 0) {
-            const obj = intersects[0].object;
+            const hit = intersects.find(i => this.interactivePoints.includes(i.object));
 
-            if (this.interactivePoints.includes(obj)) {
+            if (hit) {
+                const obj = hit.object;
+
                 if (obj.name === "circle1") this.ouvrirJukebox();
                 if (obj.name === "circle2") this.ouvrirTelephone();
                 if (obj.name === "circle3") this.ouvrirPorte();
@@ -368,9 +370,14 @@ class G9_Story {
     }
 
     ouvrirTelephone() {
+        console.log("ouvrirTelephone() CALLED");
+
         const telInterface = document.querySelector('.telephone');
+        console.log("TEL:", telInterface);
+
         telInterface.style.display = 'block';
     }
+
 
     ouvrirPorte() {
         const porteInterface = document.querySelector('.porte');
@@ -476,13 +483,13 @@ class G9_Story {
             block_pres.classList.add('open');
         });
 
-        const retourTelephone = document.querySelector('.telephone .btnRetour');
+        const retourTelephone = document.querySelector('.btnRetourTelephone');
         const telInterface = document.querySelector('.telephone');
         retourTelephone.addEventListener('click', () => {
             telInterface.style.display = 'none';
         });
 
-        const retourPorte = document.querySelector('.porte .btnRetour');
+        const retourPorte = document.querySelector('.btnRetourPorte');
         const porteInterface = document.querySelector('.porte');
         retourPorte.addEventListener('click', () => {
             porteInterface.style.display = 'none';
