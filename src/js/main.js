@@ -370,11 +370,7 @@ class G9_Story {
     }
 
     ouvrirTelephone() {
-        console.log("ouvrirTelephone() CALLED");
-
         const telInterface = document.querySelector('.telephone');
-        console.log("TEL:", telInterface);
-
         telInterface.style.display = 'block';
     }
 
