@@ -22,6 +22,7 @@ const loader = new GLTFLoader();
 
 const interiorGLTF = await loader.loadAsync("G09_SM_scene_combined_int.glb");
 const exteriorGLTF = await loader.loadAsync("G09_SM_scene_ext.glb");
+const vitresGLTF = await loader.loadAsync("G09_SM_vitres.glb");
 
 const jukebox = document.querySelector('.btnRetour');
 const jukeboxInterface = document.querySelector('.jukebox');
@@ -31,6 +32,7 @@ class G9_Story {
         this.canvas = options.canvas;
         this.interior = options.interior;
         this.exterior = options.exterior;
+        this.vitres = options.vitres;
 
         this.raycaster = new THREE.Raycaster();
         this.mouse = new THREE.Vector2();
@@ -129,6 +131,7 @@ class G9_Story {
     populate() {        
         this.scene.add(this.interior);
         this.scene.add(this.exterior);
+        this.scene.add(this.vitres);
 
         const light = new THREE.AmbientLight({color: 'white', intensity: 1});
         const directionalLight = new THREE.DirectionalLight( {color: 'white', intensity: 1} );
@@ -312,6 +315,7 @@ class G9_Story {
             lunettes.style.display = "block";
             this.interior.visible = false;
             this.exterior.visible = true;
+            this.vitres.visible = false;
 
             if (this.maskSound && !this.maskSound.isPlaying) {
                 this.maskSound.play();
@@ -320,6 +324,7 @@ class G9_Story {
             lunettes.style.display = "none";
             this.interior.visible = true;
             this.exterior.visible = false;
+            this.vitres.visible = true;
 
             if (this.maskSound && this.maskSound.isPlaying) {
                 this.maskSound.stop();
@@ -458,7 +463,8 @@ class G9_Story {
 const app = new G9_Story({
     canvas: document.querySelector(".js-canvas-3d"),
     interior: interiorGLTF.scene,
-    exterior: exteriorGLTF.scene
+    exterior: exteriorGLTF.scene,
+    vitres: vitresGLTF.scene
 });
 
 // myViewer.addGizmo(2);
