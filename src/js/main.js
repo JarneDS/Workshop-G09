@@ -228,6 +228,22 @@ class G9_Story {
         // Recule notre camera pour qu'on puisse voir le centre de la scene
         this.camera.position.z = 10;
 
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+        
+        const y = this.camera.position.y;
+
+        // On fixe le target à la même hauteur
+        this.controls.target.set(0, y + 2, 0);
+
+        // On verrouille la rotation verticale
+        this.controls.minPolarAngle = Math.PI / 2;
+        this.controls.maxPolarAngle = Math.PI / 2;
+
+        // On empêche le pan (sinon la target bouge)
+        this.controls.enablePan = false;
+
+        this.controls.update();
+
         // Crée notre scene et y rajoute notre camera
         this.scene = new THREE.Scene();
         this.scene.add(this.camera);
