@@ -112,6 +112,18 @@ class G9_Story {
 
         jukebox.addEventListener('click', () => {
             jukeboxInterface.style.display = 'none';
+
+            document.querySelectorAll('.vinylHouseTxt audio').forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
+
+            // Réinitialiser l'UI des vinyles
+            document.querySelectorAll('.vinylHouseTxt').forEach(block => {
+                block.querySelector('.house')?.classList.remove('hidden');
+                block.querySelector('.vinylHouse')?.classList.remove('playing');
+                block.querySelector('.bgPlaying')?.classList.remove('open');
+            });
         })
 
         this.initUI();
