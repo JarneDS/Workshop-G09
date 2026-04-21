@@ -62,6 +62,28 @@ class G9_Story {
             this.moveCamera();
         });
 
+        window.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowLeft") {
+                this.indexCamera--;
+
+                if (this.indexCamera < 0) {
+                    this.indexCamera = this.cameraTargets.length - 1;
+                }
+
+                this.moveCamera();
+            }
+
+            if (e.key === "ArrowRight") {
+                this.indexCamera++;
+
+                if (this.indexCamera >= this.cameraTargets.length) {
+                    this.indexCamera = 0;
+                }
+
+                this.moveCamera();
+            }
+        });
+
         // Listener audio
         this.listener = new THREE.AudioListener();
         this.camera.add(this.listener);
